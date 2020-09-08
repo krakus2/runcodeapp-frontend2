@@ -13,6 +13,7 @@ export const SliderWrapper = styled.div`
     :hover {
       .rc-slider-handle {
         box-shadow: ${(props) =>
+          console.log({ props }) ||
           `0px 0px 6px -1px  ${!props.disabled && props.theme.primaryColor}`};
       }
       .rc-slider-rail {
@@ -136,11 +137,11 @@ export function colourStyles() {
   return {
     control: (styles) => ({ ...styles, cursor: 'pointer' }),
     option: (styles) => ({ ...styles, cursor: 'pointer' }),
-    input: (styles, { isDisabled, isFocused, isSelected }) => ({
+    input: (styles) => ({
       ...styles,
-      width: this.props.context.isMobile ? 200 : 300,
-      minHeight: this.props.context.isMobile ? '14px' : '25px',
-      lineHeight: this.props.context.isMobile ? '14px' : '25px',
+      width: this.props.isMobile ? 200 : 300,
+      minHeight: this.props.isMobile ? '14px' : '25px',
+      lineHeight: this.props.isMobile ? '14px' : '25px',
       color: this.props.theme.color,
       cursor: 'pointer',
     }),
@@ -148,7 +149,7 @@ export function colourStyles() {
       ...styles,
       color: this.props.theme.placeholderColor,
       cursor: 'pointer',
-      fontSize: this.props.context.isMobile && '15px',
+      fontSize: this.props.isMobile && '15px',
     }),
     singleValue: (styles) => ({
       ...styles,

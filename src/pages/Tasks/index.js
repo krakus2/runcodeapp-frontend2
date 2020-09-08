@@ -42,10 +42,10 @@ const Tasks = ({ history }) => {
           ) : (
             tasks.map((id) => (
               <Line
-                key={task_id}
-                onClick={() => history.push(`/task?task_id=${taskId}`)}
+                key={id}
+                onClick={() => history.push(`/task?task_id=${id}`)}
               >
-                ID Zadania - {task_id}
+                ID Zadania - {id}
               </Line>
             ))
           )}

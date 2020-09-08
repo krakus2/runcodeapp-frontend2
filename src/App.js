@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
 
-/* import Task from 'pages/Task' */
+import Task from 'pages/Task'
 import Tasks from 'pages/Tasks'
 
 import GlobalStyle from 'globalStyle'
@@ -26,8 +26,8 @@ const App = () => (
         }
       >
         <Route exact path='/tasks' component={Tasks} />
-        {/* <Route exact path='/task' component={Task} /> */}
-        <Redirect from='/' to='/applicants' exact />
+        <Route exact path='/task' component={Task} />
+        <Redirect from='/' to='/tasks' exact />
         <GlobalStyle />
       </Suspense>
     </ThemeProvider>

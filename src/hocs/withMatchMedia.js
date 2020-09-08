@@ -8,4 +8,4 @@ const withMatchMedia = (Component) => (props) => {
   return <Component {...props} isMobile={isMobile} />
 }
 
-export default withMyHook
+export default withMatchMedia

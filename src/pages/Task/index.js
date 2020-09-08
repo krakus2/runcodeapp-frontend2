@@ -2,6 +2,7 @@ import React, { Component, lazy, Suspense } from 'react'
 import Select from 'react-select'
 import { withTheme } from 'styled-components'
 import Slider, { createSliderWithTooltip } from 'rc-slider'
+import { compose } from 'recompose'
 
 import {
   addAlphaChannel,
@@ -24,9 +25,9 @@ import {
   SwitchWrapper,
 } from './styles'
 
-const ResponsivePie = lazy(() => import('../layout/charts/Pie'))
-const ResponsiveLine = lazy(() => import('../layout/charts/Line'))
-const ResponsiveBar = lazy(() => import('../layout/charts/Bar'))
+const ResponsivePie = lazy(() => import('components/Charts/Pie'))
+const ResponsiveLine = lazy(() => import('components/Charts/Line'))
+const ResponsiveBar = lazy(() => import('components/Charts/Bar'))
 
 const Range = createSliderWithTooltip(Slider.Range)
 
@@ -484,7 +485,7 @@ class Task extends Component {
           <ChartWrapper
             height={420}
             mobileHeight={425}
-            isMobile={this.props.context.isMobile}
+            isMobile={this.props.isMobile}
             marginBottom={'10px'}
           >
             <ResponsiveBar
@@ -587,4 +588,4 @@ class Task extends Component {
   }
 }
 
-export default withTheme(withMatchMedia(Task))
+export default compose(withTheme, withMatchMedia)(Task)
