@@ -13,7 +13,6 @@ export const SliderWrapper = styled.div`
     :hover {
       .rc-slider-handle {
         box-shadow: ${(props) =>
-          console.log({ props }) ||
           `0px 0px 6px -1px  ${!props.disabled && props.theme.primaryColor}`};
       }
       .rc-slider-rail {
@@ -34,12 +33,7 @@ export const Wrapper = styled.main`
   align-items: center;
   background-color: ${(props) => props.theme.backgroundColor};
   height: 100%;
-  @media ${device.mobile} {
-    /* padding-bottom: 25px; */
-  }
-  @media ${device.desktop} {
-    /* height: calc(100vh - 101px); */
-  }
+
   ul {
     padding: 0;
     list-style-type: none;

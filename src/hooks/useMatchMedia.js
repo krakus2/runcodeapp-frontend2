@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 
-import { sizes } from 'theme'
+import { device } from 'theme'
 
 const BREAKPOINTS = {
   DESKTOP: 'desktop',
@@ -20,7 +20,7 @@ const useMatchMedia = () => {
   }, [])
 
   useEffect(() => {
-    mobileMediaRef.current = window.matchMedia(`(max-width: ${sizes.desktop})`)
+    mobileMediaRef.current = window.matchMedia(device.mobile)
     checkMedia()
 
     mobileMediaRef.current.addListener(checkMedia)

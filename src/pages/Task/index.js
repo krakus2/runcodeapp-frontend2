@@ -1,8 +1,9 @@
 import React, { Component, lazy, Suspense } from 'react'
 import Select from 'react-select'
 import { withTheme } from 'styled-components'
-import Slider, { createSliderWithTooltip } from 'rc-slider'
 import { compose } from 'recompose'
+
+import 'rc-slider/assets/index.css'
 
 import {
   addAlphaChannel,
@@ -12,10 +13,9 @@ import {
 } from 'utils'
 import { withMatchMedia } from 'hocs'
 
-import { Switch } from './components'
+import { Switch, Slider } from './components'
 import { OPTIONS } from './consts'
 import {
-  SliderWrapper,
   Wrapper,
   ChartWrapper,
   TopBar,
@@ -28,8 +28,6 @@ import {
 const ResponsivePie = lazy(() => import('components/Charts/Pie'))
 const ResponsiveLine = lazy(() => import('components/Charts/Line'))
 const ResponsiveBar = lazy(() => import('components/Charts/Bar'))
-
-const Range = createSliderWithTooltip(Slider.Range)
 
 class Task extends Component {
   constructor(props) {
@@ -184,20 +182,10 @@ class Task extends Component {
     event.persist()
     if (event.target.checked) {
       this.setState({ [name]: !event.target.checked }, () => {
-        if (this.props.isMobile) {
-          const height = this.tableRef.current.offsetHeight
-          window.scrollTo({
-            left: 0,
-            top: document.body.clientHeight - height - 85,
-            behavior: 'smooth',
-          })
-        } else {
-          window.scrollTo({
-            left: 0,
-            top: document.body.clientHeight,
-            behavior: 'smooth',
-          })
-        }
+        window.scrollBy({
+          top: this.props.isMobile ? 190 : 180,
+          behavior: 'smooth',
+        })
       })
     } else {
       setTimeout(() => {
@@ -221,6 +209,9 @@ class Task extends Component {
       sliderValue,
       maxMinBar2Value,
     } = this.state
+
+    console.log({ sliderValue })
+
     return (
       <Wrapper>
         <TopBar>
@@ -356,21 +347,17 @@ class Task extends Component {
               animate={true}
               motionStiffness={90}
               motionDamping={15}
-              tooltip={(data) =>
-                console.log(data) || (
-                  <div>
-                    <p>
-                      <strong style={{ color: data.color }}>
-                        {data.value}
-                      </strong>{' '}
-                      czyli{' '}
-                      <strong>
-                        {Math.round((data.value / data.all) * 100)}%
-                      </strong>
-                    </p>
-                  </div>
-                )
-              }
+              tooltip={(data) => (
+                <div>
+                  <p>
+                    <strong style={{ color: data.color }}>{data.value}</strong>{' '}
+                    czyli{' '}
+                    <strong>
+                      {Math.round((data.value / data.all) * 100)}%
+                    </strong>
+                  </p>
+                </div>
+              )}
               legends={[
                 {
                   anchor: 'bottom',
@@ -454,32 +441,12 @@ class Task extends Component {
             isMobile={this.props.isMobile}
           >
             <h3>Statystyki testów</h3>
-            <SliderWrapper disabled={this.state.loading}>
-              <Range
-                disabled={this.state.loading}
-                min={1}
-                max={5}
-                dots
-                step={1}
-                className='mySlider'
-                style={{ margin: '20px 5px' }}
-                activeDotStyle={{
-                  borderColor: this.props.theme.primaryColor,
-                }}
-                dotStyle={{
-                  borderColor: this.props.theme.disabled,
-                }}
-                trackStyle={[
-                  { backgroundColor: this.props.theme.primaryColor },
-                ]}
-                handleStyle={{
-                  borderColor: this.props.theme.primaryColor,
-                }}
-                value={sliderValue}
-                onChange={this.onSliderValueChange}
-                onAfterChange={this.onSliderAfterChange}
-              />
-            </SliderWrapper>
+            <Slider
+              sliderValue={sliderValue}
+              onSliderValueChange={this.onSliderValueChange}
+              onSliderAfterChange={this.onSliderAfterChange}
+              isLoading={this.state.loading}
+            />
             <p style={{ textAlign: 'left' }}>Wybierz liczbę prób rozwiązania</p>
           </ChartWrapper>
           <ChartWrapper

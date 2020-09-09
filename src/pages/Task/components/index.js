@@ -1,3 +1,4 @@
 import Switch from './Switch'
+import Slider from './Slider'
 
-export { Switch }
+export { Switch, Slider }
