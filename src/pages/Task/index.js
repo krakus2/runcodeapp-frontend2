@@ -210,8 +210,6 @@ class Task extends Component {
       maxMinBar2Value,
     } = this.state
 
-    console.log({ sliderValue })
-
     return (
       <Wrapper>
         <TopBar>

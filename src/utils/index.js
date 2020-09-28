@@ -39,13 +39,33 @@ export function getSqlYear(d) {
   }-${d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()}`
 }
 
+const resolvePath = (path) => {
+  if (!path) return ''
+
+  return path[0] === '/' ? path : `/${path}`
+}
+
+export const addPortToUrl = ({ host, port, path }) => {
+  const pathPart = resolvePath(path)
+
+  if (host) {
+    return `${host}:${port}${pathPart}`
+  }
+
+  return `${host}${pathPart}`
+}
+
 const cache = setupCache({
-  maxAge: 15 * 60 * 1000, //15 minutes
+  maxAge: 5 * 60 * 1000, //5 minutes
 })
 
+const { host, port = '' } =
+  (window && window.options && window.options.server) || {}
+
 // Create `axios` instance passing the newly created `cache.adapter`
-const api = axios.create({
+export const api = axios.create({
   adapter: cache.adapter,
+  baseURL: addPortToUrl({ host, port, path: '/api' }),
 })
 
 export async function getDataFromDB(fromValue, task_id) {
@@ -53,16 +73,14 @@ export async function getDataFromDB(fromValue, task_id) {
     const d = new Date()
     d.setDate(d.getDate() - fromValue)
     const sqlDate = getSqlYear(d)
-    const length = await cache.store.length()
-    console.log('Cache store length:', length)
 
     return api({
-      url: `/api/tests/task_id=${task_id}&test_date=${sqlDate}&from_value=${fromValue}`,
+      url: `/tests/task_id=${task_id}&test_date=${sqlDate}&from_value=${fromValue}`,
       method: 'get',
     })
   } else {
     return api({
-      url: `/api/tests/task_id=${task_id}&test_date=all&from_value=${fromValue}`,
+      url: `/tests/task_id=${task_id}&test_date=all&from_value=${fromValue}`,
       method: 'get',
     })
   }
@@ -73,16 +91,14 @@ export async function getDataFromDB2(fromValue, task_id, from, to) {
     const d = new Date()
     d.setDate(d.getDate() - fromValue)
     const sqlDate = getSqlYear(d)
-    const length = await cache.store.length()
-    console.log('Cache store length:', length)
 
     return api({
-      url: `/api/tests/task_id=${task_id}&test_date=${sqlDate}&from=${from}&to=${to}`,
+      url: `/tests/task_id=${task_id}&test_date=${sqlDate}&from=${from}&to=${to}`,
       method: 'get',
     })
   } else {
     return api({
-      url: `/api/tests/task_id=${task_id}&test_date=all&from=${from}&to=${to}`,
+      url: `/tests/task_id=${task_id}&test_date=all&from=${from}&to=${to}`,
       method: 'get',
     })
   }
@@ -95,10 +111,8 @@ export function memoize(f) {
     //dodać maxAge
     const k = JSON.stringify(args)
     if (store.has(k)) {
-      console.log('z cachem')
       return store.get(k)
     } else {
-      console.log("bez cache'a")
       store.set(k, f(...args))
       localStorage.setItem('store', JSON.stringify(Array.from(store.entries())))
       return store.get(k)

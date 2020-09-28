@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import { useMatchMedia } from 'hooks'
+import { api } from 'utils'
 
 import { Line, Wrapper } from './styles'
 
@@ -12,7 +12,10 @@ const Tasks = ({ history }) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      const result = await axios.get('/api/tests')
+      const result = await api({
+        url: `/tests`,
+        method: 'get',
+      })
 
       setTasks(result.data)
       setIsLoading(false)
@@ -40,14 +43,17 @@ const Tasks = ({ history }) => {
               Ładowanie trwa...
             </p>
           ) : (
-            tasks.map((id) => (
-              <Line
-                key={id}
-                onClick={() => history.push(`/task?task_id=${id}`)}
-              >
-                ID Zadania - {id}
-              </Line>
-            ))
+            tasks.map(
+              ({ id, ...rest }) =>
+                console.log({ rest }) || (
+                  <Line
+                    key={id}
+                    onClick={() => history.push(`/task?task_id=${id}`)}
+                  >
+                    ID Zadania - {id}
+                  </Line>
+                )
+            )
           )}
         </ul>
       </Wrapper>
