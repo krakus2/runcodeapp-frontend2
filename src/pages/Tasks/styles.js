@@ -7,7 +7,7 @@ export const Wrapper = styled.main`
   flex-direction: column;
   align-items: center;
   background-color: ${(props) => props.theme.backgroundColor};
-  height: 100%;
+  min-height: 100%;
 
   ul {
     padding: 0;
@@ -41,8 +41,8 @@ export const Line = styled.li`
 `
 
 export const LoaderWrapper = styled.div`
-  height: 100%;
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
   justify-content: center;
 `
