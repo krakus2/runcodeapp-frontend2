@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useMatchMedia } from 'hooks'
 import { api } from 'utils'
 
-import { Line, Wrapper } from './styles'
+import { Line, Wrapper, LoaderWrapper } from './styles'
 
 const Tasks = ({ history }) => {
   const [tasks, setTasks] = useState([])
@@ -30,8 +30,8 @@ const Tasks = ({ history }) => {
     return (
       <Wrapper isMobile={isMobile}>
         <h3>Lista dodanych zadań</h3>
-        <ul>
-          {isLoading ? (
+        {isLoading ? (
+          <LoaderWrapper>
             <p
               style={{
                 textAlign: 'center',
@@ -42,8 +42,10 @@ const Tasks = ({ history }) => {
             >
               Ładowanie trwa...
             </p>
-          ) : (
-            tasks.map(
+          </LoaderWrapper>
+        ) : (
+          <ul>
+            {tasks.map(
               ({ id, ...rest }) =>
                 console.log({ rest }) || (
                   <Line
@@ -53,9 +55,9 @@ const Tasks = ({ history }) => {
                     ID Zadania - {id}
                   </Line>
                 )
-            )
-          )}
-        </ul>
+            )}
+          </ul>
+        )}
       </Wrapper>
     )
   }

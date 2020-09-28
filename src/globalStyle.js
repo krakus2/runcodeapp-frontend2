@@ -4,12 +4,19 @@ import theme from './theme'
 
 const GlobalStyle = createGlobalStyle`
    html, body {
+      height: 100%;
+      width: 100%;
       font-family: Roboto;
       font-size: ${theme.defaultFontSize};
       margin: 0;
       padding: 0;
       box-sizing: border-box;
    }
+
+   #root {
+      height: 100%;
+   }
+
    ::selection {
       background: ${theme.primaryColor};
       color: white;

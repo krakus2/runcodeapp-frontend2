@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 import { addAlphaChannel } from 'utils'
-import { device } from 'theme'
 
 export const Wrapper = styled.main`
   display: flex;
@@ -9,12 +8,7 @@ export const Wrapper = styled.main`
   align-items: center;
   background-color: ${(props) => props.theme.backgroundColor};
   height: 100%;
-  @media ${device.mobile} {
-    /* padding-bottom: 25px; */
-  }
-  @media ${device.desktop} {
-    /* height: calc(100vh - 101px); */
-  }
+
   ul {
     padding: 0;
     list-style-type: none;
@@ -44,4 +38,11 @@ export const Line = styled.li`
         addAlphaChannel(props.theme.primaryColor, '0.25')};
     }
   }
+`
+
+export const LoaderWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
