@@ -12,9 +12,9 @@ const Tasks = ({ history }) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
+
       const result = await api({
-        url: `/tests`,
-        method: 'get',
+        url: `tests`,
       })
 
       setTasks(result.data)
@@ -45,17 +45,14 @@ const Tasks = ({ history }) => {
           </LoaderWrapper>
         ) : (
           <ul>
-            {tasks.map(
-              ({ id, ...rest }) =>
-                console.log({ rest }) || (
-                  <Line
-                    key={id}
-                    onClick={() => history.push(`/task?task_id=${id}`)}
-                  >
-                    ID Zadania - {id}
-                  </Line>
-                )
-            )}
+            {tasks.map(({ id }) => (
+              <Line
+                key={id}
+                onClick={() => history.push(`/task?task_id=${id}`)}
+              >
+                ID Zadania - {id}
+              </Line>
+            ))}
           </ul>
         )}
       </Wrapper>

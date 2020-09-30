@@ -46,9 +46,10 @@ const resolvePath = (path) => {
 }
 
 export const addPortToUrl = ({ host, port, path }) => {
+  if (!host) return
   const pathPart = resolvePath(path)
 
-  if (host) {
+  if (port) {
     return `${host}:${port}${pathPart}`
   }
 
@@ -63,9 +64,13 @@ const { host, port = '' } =
   (window && window.options && window.options.server) || {}
 
 // Create `axios` instance passing the newly created `cache.adapter`
+
+const API_PREFIX = '/api'
+const baseURL = addPortToUrl({ host, port, path: API_PREFIX })
+
 export const api = axios.create({
   adapter: cache.adapter,
-  baseURL: addPortToUrl({ host, port, path: '/api' }),
+  baseURL,
 })
 
 export async function getDataFromDB(fromValue, task_id) {
@@ -75,13 +80,11 @@ export async function getDataFromDB(fromValue, task_id) {
     const sqlDate = getSqlYear(d)
 
     return api({
-      url: `/tests/task_id=${task_id}&test_date=${sqlDate}&from_value=${fromValue}`,
-      method: 'get',
+      url: `tests/task_id=${task_id}&test_date=${sqlDate}&from_value=${fromValue}`,
     })
   } else {
     return api({
-      url: `/tests/task_id=${task_id}&test_date=all&from_value=${fromValue}`,
-      method: 'get',
+      url: `tests/task_id=${task_id}&test_date=all&from_value=${fromValue}`,
     })
   }
 }
@@ -93,12 +96,11 @@ export async function getDataFromDB2(fromValue, task_id, from, to) {
     const sqlDate = getSqlYear(d)
 
     return api({
-      url: `/tests/task_id=${task_id}&test_date=${sqlDate}&from=${from}&to=${to}`,
-      method: 'get',
+      url: `tests/task_id=${task_id}&test_date=${sqlDate}&from=${from}&to=${to}`,
     })
   } else {
     return api({
-      url: `/tests/task_id=${task_id}&test_date=all&from=${from}&to=${to}`,
+      url: `tests/task_id=${task_id}&test_date=all&from=${from}&to=${to}`,
       method: 'get',
     })
   }
