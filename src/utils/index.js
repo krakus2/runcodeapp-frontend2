@@ -68,9 +68,13 @@ const { host, port = '' } =
 const API_PREFIX = '/api'
 const baseURL = addPortToUrl({ host, port, path: API_PREFIX })
 
+const RUNCODE_ACCESS_TOKEN_KEY = 'X-RunCode-Access'
+const RUNCODE_ACCESS_TOKEN_VALUE = 'RUNCODE'
+
 export const api = axios.create({
   adapter: cache.adapter,
   baseURL,
+  headers: { [RUNCODE_ACCESS_TOKEN_KEY]: RUNCODE_ACCESS_TOKEN_VALUE },
 })
 
 export async function getDataFromDB(fromValue, task_id) {
